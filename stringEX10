@@ -1,0 +1,3 @@
+let upperCaseText2 = "HELLO JAVASCRIPT!";
+let lowerCaseText2 = upperCaseText2.toLowerCase()// YOUR CODE HERE
+console.log("Exercise 10 Lowercase:", lowerCaseText2); // Expected: "hello javascript!"
