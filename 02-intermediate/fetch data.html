@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Next/Previous Post Navigator</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      text-align: center;
+      padding: 20px;
+      justify-content: center;
+      align-items: center;
+    }
+    .post {
+      border: 1px solid #fe0505;
+      border-radius: 10px;
+      padding: 15px;
+      margin: 20px auto;
+      max-width: 400px;
+      background: #ff7b7b;
+    }
+    button {
+      margin: 5px;
+      padding: 8px 15px;
+      border: none;
+      background: #007bff;
+      color: white;
+      border-radius: 50px;
+      cursor: pointer;
+    }
+    button:disabled {
+      background: #ccc;
+      cursor: not-allowed;
+    }
+    button:hover:not(:disabled) {
+      background: #ff57b3;
+    }
+  </style>
+</head>
+<body>
+  <h1>Post Navigator</h1>
+  <div id="post" class="post" "></div>
+  
+  <button id="prevBtn" onclick="prevPost()">Previous</button>
+  <button id="nextBtn" onclick="nextPost()">Next</button>
+
+  <script>
+    let posts = [];
+    let currentIndex = 0;
+
+    async function fetchPosts() {
+      const url = "https://jsonplaceholder.typicode.com/posts";
+      try {
+        const response = await fetch(url);
+        posts = await response.json();
+        showPost(currentIndex);
+      } catch (error) {
+        document.getElementById("post").innerHTML = `<p style="color:red;">Error: ${error.message}</p>`;
+      }
+    }
+
+    function showPost(index) {
+      const post = posts[index];
+      document.getElementById("post").innerHTML = `
+        <h3>${post.title}</h3>
+        <p>${post.body}</p>
+        <small>Post ID: ${post.id}</small>`;
+      updateButtons();
+    }
+
+    function nextPost() {
+      if (currentIndex < posts.length - 1) {
+        currentIndex++;
+        showPost(currentIndex);
+      }
+    }
+    
+    function prevPost() {
+      if (currentIndex > 0) {
+        currentIndex--;
+        showPost(currentIndex);
+      }
+    }
+
+    function updateButtons() {
+      document.getElementById("prevBtn").disabled = (currentIndex === 0);
+      document.getElementById("nextBtn").disabled = (currentIndex === posts.length - 1);
+    }                                                
+
+    fetchPosts();
+  </script>
+</body>
+</html>
